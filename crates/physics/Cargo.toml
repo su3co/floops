@@ -1,9 +1,15 @@
 [package]
-name = "unnamed-physics"
+name = "floops"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-description = "Parallel particle kinematics, tree amplitudes, and SU(3) lattice Monte Carlo"
+publish = false
+description = "Scattering amplitudes, particle decays, and Feynman diagrams in Rust"
+repository.workspace = true
+readme = "README.md"
+keywords = ["physics", "amplitudes", "feynman", "particles", "qcd"]
+categories = ["science", "simulation"]
+include = ["src/**", "tests/**", "Cargo.toml", "README.md", "LICENSE"]
 
 [dependencies]
 serde.workspace = true

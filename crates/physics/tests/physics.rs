@@ -1,5 +1,4 @@
-use std::f64::consts::PI;
-use unnamed_physics::{
+use floops::{
     amplitude::*,
     decay, diagram,
     lattice::{Lattice, LatticeRequest},
@@ -8,6 +7,7 @@ use unnamed_physics::{
     scattering::*,
     su3::*,
 };
+use std::f64::consts::PI;
 fn near(a: f64, b: f64, tol: f64) {
     assert!((a - b).abs() < tol, "{a} != {b}, tolerance {tol}");
 }
@@ -382,7 +382,7 @@ fn invalid_requests_are_rejected() {
         ..Default::default()
     })
     .is_err());
-    assert!(unnamed_physics::lattice::simulate(&LatticeRequest {
+    assert!(floops::lattice::simulate(&LatticeRequest {
         chains: 0,
         ..Default::default()
     })

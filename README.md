@@ -1,6 +1,6 @@
-# unnamed
+# floops
 
-A Rust laboratory for particle decays, scattering amplitudes and SU(3) gauge fields, with an interactive Three.js viewer and small Python bindings. Temporary name: `feynman` is already registered on PyPI.
+Scattering amplitudes, particle decays and Feynman diagrams, computed in Rust. Thin Python bindings provide access to the same engine; a Three.js viewer animates its results.
 
 | Experiment | Implemented physics |
 | --- | --- |
@@ -12,46 +12,50 @@ A Rust laboratory for particle decays, scattering amplitudes and SU(3) gauge fie
 
 This is an experimental, bounded physics toolkit. It does not implement full Standard Model event generation, showers, hadronization, loop amplitudes, dynamical lattice quarks, or real-time QCD. See [physics and validation](docs/PHYSICS.md).
 
-![Interactive particle experiment](docs/images/laboratory.png)
+## Python
 
-## Run
-
-Requires Rust, Node.js 22.12+ and npm. Python is optional.
+Python 3.10+; calculations run in native Rust, with Rayon for parallel batches. The initial package release targets PyPI; crates.io publication is deferred.
 
 ```sh
-cd web
-npm ci
-npm run build
-cd ..
-cargo run --release -p unnamed-server -- serve
-```
-
-Open **http://127.0.0.1:8631**. Calculations run in Rust; the browser renders a bounded sample and displays statistics from the entire batch. Animation is controlled with Play and the timeline. JSON, CSV and SVG exports are available.
-
-## CLI and Python
-
-```sh
-cargo run --release -p unnamed-server -- scatter --input examples/scatter.json
-cargo run --release -p unnamed-server -- lattice --input examples/lattice.json
-cargo run --release -p unnamed-server -- benchmark --events 5000000
-cargo test --release -p unnamed-physics
-```
-
-Optional Python bindings:
-
-```sh
-python -m venv .venv
-# Activate .venv, then:
-pip install .
-python examples/python_smoke.py
+pip install floops
 ```
 
 ```python
 import json
-import unnamed_physics as physics
+import floops
 
-result = json.loads(physics.scatter(json.dumps({"events": 1000000, "seed": 42})))
+result = json.loads(floops.scatter('{"events":100000,"seed":42}'))
 print(result["cross_section_pb"], result["standard_error_pb"])
+
+decays = json.loads(floops.decay('{"pdg":13,"events":1000,"display":4}'))
+diagrams = json.loads(floops.diagrams('{"process":"gluon_gluon"}'))
 ```
 
-The wrapper releases Python while Rust computes. All physics lives in Rust. No package has been published to PyPI. [API and extension guide](docs/API.md) · [benchmark](benchmarks/README.md) · [MIT license](LICENSE).
+Bindings accept and return JSON strings. Invalid requests raise `ValueError`. Wheels bundle the native backend; building from source requires Rust. [API](docs/API.md) · [validation](docs/VALIDATION.md).
+
+## 3D viewer and Rust development
+
+The viewer and CLI run from this repository. Requires Rust, Node.js 22.12+ and npm.
+
+```sh
+git clone https://github.com/su3co/floops.git
+cd floops
+npm ci --prefix web
+npm run build --prefix web
+cargo run --release -p floops-cli -- serve
+```
+
+Open **http://127.0.0.1:8631**. Calculations run in Rust; the browser renders a bounded sample and displays statistics from the entire batch. Animation is controlled with Play and the timeline. JSON, CSV and SVG exports are available.
+
+## Development commands
+
+```sh
+cargo run --release -p floops-cli -- scatter --input examples/scatter.json
+cargo run --release -p floops-cli -- lattice --input examples/lattice.json
+cargo run --release -p floops-cli -- benchmark --events 5000000
+cargo test --release -p floops
+```
+
+Build the Python extension locally with `pip install .`, then run `python examples/python_smoke.py`. The wrapper releases Python while Rust computes. All physics lives in Rust.
+
+[Release guide](docs/RELEASING.md) · [Benchmark](benchmarks/README.md) · [MIT](LICENSE).

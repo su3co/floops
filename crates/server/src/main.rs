@@ -5,12 +5,12 @@ use axum::{
     Json, Router,
 };
 use clap::{Parser, Subcommand};
+use floops::{amplitude, decay, diagram, lattice, scattering};
 use serde::de::DeserializeOwned;
 use serde_json::{json, Value};
 use std::{path::PathBuf, sync::Arc};
 use tokio::sync::Semaphore;
 use tower_http::services::{ServeDir, ServeFile};
-use unnamed_physics::{amplitude, decay, diagram, lattice, scattering};
 
 #[derive(Parser)]
 #[command(
@@ -74,7 +74,7 @@ type Gate = Arc<Semaphore>;
 type ApiResult = Result<Json<Value>, (StatusCode, Json<Value>)>;
 async fn compute<T: serde::Serialize + Send + 'static>(
     gate: Gate,
-    f: impl FnOnce() -> unnamed_physics::Result<T> + Send + 'static,
+    f: impl FnOnce() -> floops::Result<T> + Send + 'static,
 ) -> ApiResult {
     let permit = gate.try_acquire_owned().map_err(|_| {
         (

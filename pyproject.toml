@@ -1,15 +1,32 @@
 [build-system]
-requires = ["maturin>=1.7,<2"]
+requires = ["maturin>=1.9,<2"]
 build-backend = "maturin"
 
 [project]
-name = "unnamed-su3-physics"
+name = "floops"
 version = "0.1.0"
-description = "Temporary-name Python bindings to the Rust particle simulation core"
+description = "Rust-powered scattering amplitudes, particle decays, and Feynman diagrams"
+readme = "crates/physics/README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["physics", "amplitudes", "feynman", "particles", "qcd"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+
+[project.urls]
+Repository = "https://github.com/su3co/floops"
+Documentation = "https://github.com/su3co/floops/blob/main/docs/PHYSICS.md"
+Issues = "https://github.com/su3co/floops/issues"
 
 [tool.maturin]
 manifest-path = "crates/python/Cargo.toml"
-module-name = "unnamed_physics"
+module-name = "floops"
+include = [{ path = "LICENSE", format = "sdist" }]
 

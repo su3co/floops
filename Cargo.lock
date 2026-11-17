@@ -216,6 +216,39 @@ dependencies = [
 ]
 
 [[package]]
+name = "floops"
+version = "0.1.0"
+dependencies = [
+ "num-complex",
+ "rayon",
+ "serde",
+]
+
+[[package]]
+name = "floops-cli"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "clap",
+ "floops",
+ "rayon",
+ "serde",
+ "serde_json",
+ "tokio",
+ "tower-http",
+]
+
+[[package]]
+name = "floops-python"
+version = "0.1.0"
+dependencies = [
+ "floops",
+ "pyo3",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "form_urlencoded"
 version = "1.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -810,39 +843,6 @@ name = "unicode-ident"
 version = "1.0.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a2c754d6c33795a1c324727428e5a7dedb5b06195f9890bdbcba760d3e246563"
-
-[[package]]
-name = "unnamed-physics"
-version = "0.1.0"
-dependencies = [
- "num-complex",
- "rayon",
- "serde",
-]
-
-[[package]]
-name = "unnamed-python"
-version = "0.1.0"
-dependencies = [
- "pyo3",
- "serde",
- "serde_json",
- "unnamed-physics",
-]
-
-[[package]]
-name = "unnamed-server"
-version = "0.1.0"
-dependencies = [
- "axum",
- "clap",
- "rayon",
- "serde",
- "serde_json",
- "tokio",
- "tower-http",
- "unnamed-physics",
-]
 
 [[package]]
 name = "utf8parse"

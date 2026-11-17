@@ -1,8 +1,8 @@
 # Implementation and design
 
-Temporary project name: unnamed. `feynman` is occupied on PyPI. No PyPI publication is planned until a name is chosen.
+Project name: **floops**. The first release targets PyPI with a Rust backend and thin Python bindings. Crates.io publication is deferred.
 
-The requested outcome is a Rust particle simulator with parallel batches, a 3D animated interface, SU(3) simulations, scattering amplitudes, Feynman diagrams, a small Python wrapper, and a repository in SU3 Labs.
+The focus is scattering amplitudes, decay calculations and Feynman diagrams in Rust, with Python access and an interactive Three.js viewer. SU(3) algebra and pure-gauge lattice experiments are also included. Loop amplitudes are a future capability, not part of the initial release.
 
 Implemented. Requirement-by-requirement evidence is recorded in [VALIDATION.md](VALIDATION.md); physical scope is documented in [PHYSICS.md](PHYSICS.md).
 
@@ -15,7 +15,7 @@ Implemented. Requirement-by-requirement evidence is recorded in [VALIDATION.md](
 | Feynman diagrams | Process-linked exchange/contact diagrams, recursive gluon tree enumeration, SVG export |
 | Interactive animation | Three.js event trajectories and lattice slices; real browser checks at desktop/mobile widths |
 | Python | Thin PyO3 bindings calling the same Rust calculations; installed wheel smoke test |
-| Repository | Documented source, CI, reproducible commands, pushed to verified su3-labs organization |
+| Repository | Documented source, CI, reproducible commands, pushed to verified su3co organization |
 
 ## Visual plan
 
@@ -26,7 +26,7 @@ Typography: locally bundled IBM Plex Sans for controls, IBM Plex Serif for the e
 Layout: an experiment bench. The 3D scattering scene occupies the main area; a compact settings column sits at the left, with results and diagrams directly below the scene. Left-aligned text, no marketing hero or repeated metric cards.
 
 ```
-unnamed                          SU(3) laboratory     sources
+floops                          SU(3) laboratory     sources
 Events / Amplitudes / Lattice
 +------------------+------------------------------------------+
 | experiment       |                                          |

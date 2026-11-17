@@ -2,7 +2,8 @@
 import json
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-import unnamed_physics as physics
+import floops as physics
+assert physics.__version__ == "0.1.0"
 
 scatter = json.loads(physics.scatter('{"events":10000,"display":4,"seed":42}'))
 assert scatter["cross_section_pb"] > 0
@@ -16,6 +17,17 @@ amplitude = json.loads(physics.amplitude((Path(__file__).parent / "amplitude.jso
 assert amplitude["norm_squared"] > 0
 assert amplitude["four_gluon_spin_color_averaged"] > 0
 assert len(json.loads(physics.catalogue())["particles"]) == 44
+assert len(json.loads(physics.diagrams('{"legs":6}'))) == 220
+diagrams = json.loads(physics.diagrams('{"process":"gluon_gluon"}'))
+assert {d["channel"] for d in diagrams} == {"s", "t", "u", "contact"}
+assert all(d["svg"].startswith("<svg") for d in diagrams)
+for request in ['{"legs":7}', '{"process":"invalid"}', '{"legs":4,"process":"gluon_gluon"}']:
+    try:
+        physics.diagrams(request)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("Invalid diagram request was accepted")
 with ThreadPoolExecutor(2) as pool:
     parallel = list(pool.map(physics.scatter, ['{"events":10000,"seed":42}'] * 2))
 assert json.loads(parallel[0])["histogram"] == json.loads(parallel[1])["histogram"]
@@ -25,4 +37,4 @@ except ValueError:
     pass
 else:
     raise AssertionError("Invalid parameters were accepted")
-print("Python native extension: scattering, decays, lattice, amplitude, catalogue, concurrency and errors passed.")
+print("Python native extension: scattering, decays, lattice, amplitude, diagrams, catalogue, concurrency and errors passed.")

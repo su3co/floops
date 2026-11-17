@@ -88,7 +88,7 @@ Reference: [David Tong, Gauge Theory, chapter 4](https://davidtong.org/teaching/
 
 ## Numerical checks
 
-`cargo test --release -p unnamed-physics` tests:
+`cargo test --release -p floops` tests:
 
 - Lorentz-invariant masses and inverse boosts;
 - on-shell two/three-body kinematics and four-momentum conservation;

@@ -11,7 +11,7 @@ This has no shower, hadronization, detector, lattice or general multi-leg amplit
 Reproduce:
 
 ```sh
-cargo run --release -p unnamed-server -- benchmark --events 5000000 --repeats 5
+cargo run --release -p floops-cli -- benchmark --events 5000000 --repeats 5
 ```
 
 The CLI records every timing and a cross-section checksum. Set `RAYON_NUM_THREADS` to compare worker counts.

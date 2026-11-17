@@ -58,7 +58,7 @@ let mode: Mode = "scattering",
   lastDiagrams: { svg: string; channel: string; mediator: string }[] = [];
 let chamber: Chamber | undefined;
 $("#app").innerHTML =
-  `<header class="masthead"><a href="/" class="wordmark" aria-label="unnamed home"><span class="symbol">∿</span>unnamed</a><span class="descriptor">Particle laboratory</span><a class="source-link" href="https://github.com/su3-labs/unnamed" target="_blank" rel="noreferrer">Source & documentation</a></header>
+  `<header class="masthead"><a href="/" class="wordmark" aria-label="floops home"><span class="symbol">∿</span>floops</a><span class="descriptor">Particle laboratory</span><a class="source-link" href="https://github.com/su3co/floops" target="_blank" rel="noreferrer">Source & documentation</a></header>
 <main><div class="intro"><div><h1>Particle experiments</h1><p>Scattering, decays and SU(3) gauge fields.</p></div><div class="engine" id="engine">Connecting to the Rust engine…</div></div>
 <nav class="modes" aria-label="Experiments"><button data-mode="scattering" aria-pressed="true">Scattering</button><button data-mode="decays" aria-pressed="false">Decays</button><button data-mode="amplitudes" aria-pressed="false">Amplitudes</button><button data-mode="lattice" aria-pressed="false">SU(3) lattice</button></nav>
 <section class="bench" aria-label="Experiment bench"><aside class="parameters"><div class="panel-heading"><h2 id="experiment-title">Scattering experiment</h2><span id="model-tag">Tree level</span></div><form id="parameters"><div id="fields"></div><button class="run" type="submit" id="run">Run simulation <span>↗</span></button></form><div class="status" id="status" role="status" aria-live="polite">Preparing the experiment.</div><p class="scope" id="scope"></p></aside>
@@ -685,7 +685,7 @@ $("#timeline").oninput = () => {
 $("#camera").onclick = () => chamber?.resetCamera();
 $("#export").onclick = () =>
   lastResult &&
-  download(`unnamed-${mode}.json`, JSON.stringify(lastResult, null, 2));
+  download(`floops-${mode}.json`, JSON.stringify(lastResult, null, 2));
 $("#export-csv").onclick = () => {
   if (!lastResult) return;
   let csv = "";
@@ -724,7 +724,7 @@ $("#export-csv").onclick = () => {
           (p: Momentum, i: number) => `${i + 1},${p.e},${p.px},${p.py},${p.pz}`,
         )
         .join("\n");
-  download(`unnamed-${mode}.csv`, csv, "text/csv");
+  download(`floops-${mode}.csv`, csv, "text/csv");
 };
 try {
   chamber = new Chamber($("#chamber"));
@@ -754,7 +754,7 @@ async function init() {
     await run();
   } catch {
     $("#status").textContent =
-      "Rust engine unavailable. Start cargo run --release -p unnamed-server, then reload.";
+      "Rust engine unavailable. Start cargo run --release -p floops-cli, then reload.";
     $("#status").classList.add("error");
     $("#engine").textContent = "Engine offline";
   }

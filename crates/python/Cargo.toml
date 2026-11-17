@@ -1,16 +1,19 @@
 [package]
-name = "unnamed-python"
+name = "floops-python"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+repository.workspace = true
+publish = false
+description = "Python bindings for the floops Rust physics engine"
 
 [lib]
-name = "unnamed_physics"
+name = "floops"
 crate-type = ["cdylib"]
 
 [dependencies]
-physics_core = { package = "unnamed-physics", path = "../physics" }
-pyo3 = { version = "0.30", features = ["extension-module"] }
+physics_core = { package = "floops", path = "../physics", version = "0.1.0" }
+pyo3 = { version = "0.30", features = ["extension-module", "abi3-py310"] }
 serde.workspace = true
 serde_json.workspace = true
 

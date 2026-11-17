@@ -1,11 +1,16 @@
 [package]
-name = "unnamed-server"
+name = "floops-cli"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
+publish = false
+
+[[bin]]
+name = "floops"
+path = "src/main.rs"
 
 [dependencies]
-unnamed-physics = { path = "../physics" }
+floops = { path = "../physics", version = "0.1.0" }
 serde.workspace = true
 serde_json.workspace = true
 axum = "0.8"

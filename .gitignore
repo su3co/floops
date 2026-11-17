@@ -9,4 +9,5 @@ __pycache__/
 *.whl
 .DS_Store
 /.playwright-cli/
+/dist/
 
