@@ -1,5 +1,7 @@
 //! Natural units (GeV, c = hbar = 1), metric (+---). See docs/PHYSICS.md.
 pub mod amplitude;
+#[cfg(feature = "cuda")]
+pub mod cuda;
 pub mod decay;
 pub mod diagram;
 pub mod lattice;

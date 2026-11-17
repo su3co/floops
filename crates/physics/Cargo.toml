@@ -9,10 +9,22 @@ repository.workspace = true
 readme = "README.md"
 keywords = ["physics", "amplitudes", "feynman", "particles", "qcd"]
 categories = ["science", "simulation"]
-include = ["src/**", "tests/**", "Cargo.toml", "README.md", "LICENSE"]
+include = ["src/**", "tests/**", "examples/**", "Cargo.toml", "README.md", "LICENSE"]
+
+[features]
+cuda = ["dep:cudarc"]
 
 [dependencies]
 serde.workspace = true
 num-complex.workspace = true
 rayon.workspace = true
+cudarc = { version = "0.19.10", optional = true, default-features = false, features = ["std", "driver", "nvrtc", "dynamic-loading", "cuda-12080"] }
+
+[dev-dependencies]
+serde_json.workspace = true
+clap = { version = "4", features = ["derive"] }
+
+[[example]]
+name = "cuda_scatter"
+required-features = ["cuda"]
 
