@@ -1,0 +1,24 @@
+{
+  "cross_section_pb": 33084.59903260332,
+  "events": 5000000,
+  "parallel_events_per_second": 449883030.4120928,
+  "parallel_ms": [
+    10.050208,
+    10.457875,
+    11.114,
+    11.159,
+    12.183958
+  ],
+  "repeats": 5,
+  "reproducible": true,
+  "scope": "Massless weighted gg → gg event generation and histogram reduction, no shower or detector",
+  "serial_ms": [
+    84.132166,
+    84.5085,
+    85.322542,
+    85.89979100000001,
+    88.17591700000001
+  ],
+  "speedup": 7.677032751484614,
+  "threads": 12
+}

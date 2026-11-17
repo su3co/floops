@@ -1,0 +1,16 @@
+[package]
+name = "unnamed-server"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+unnamed-physics = { path = "../physics" }
+serde.workspace = true
+serde_json.workspace = true
+axum = "0.8"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal", "sync"] }
+tower-http = { version = "0.6", features = ["fs", "trace", "limit"] }
+clap = { version = "4", features = ["derive"] }
+rayon.workspace = true
+

@@ -1,0 +1,12 @@
+[package]
+name = "unnamed-physics"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Parallel particle kinematics, tree amplitudes, and SU(3) lattice Monte Carlo"
+
+[dependencies]
+serde.workspace = true
+num-complex.workspace = true
+rayon.workspace = true
+

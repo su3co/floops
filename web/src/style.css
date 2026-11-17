@@ -1,0 +1,840 @@
+:root {
+  font-family: "IBM Plex Sans", sans-serif;
+  color: #17293d;
+  background: #e7edf3;
+  font-synthesis: none;
+  font-size: 14px;
+  --ink: #17293d;
+  --blue: #254d75;
+  --muted: #5c7085;
+  --line: #ced9e4;
+  --paper: #f7f9fb;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a,
+input,
+select,
+summary,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: wait;
+  opacity: 0.55;
+}
+a {
+  color: inherit;
+  text-underline-offset: 4px;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 3px solid #476f9a;
+  outline-offset: 3px;
+}
+.masthead {
+  max-width: 1500px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  padding: 24px 48px;
+  gap: 26px;
+}
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-family: "IBM Plex Serif", serif;
+  font-style: italic;
+  font-size: 28px;
+  letter-spacing: -1px;
+}
+.symbol {
+  font-family: serif;
+  display: grid;
+  place-items: center;
+  border: 1px solid #647e98;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 29px;
+  font-style: normal;
+}
+.descriptor {
+  padding-left: 25px;
+  border-left: 1px solid #bac9d7;
+  color: var(--muted);
+  font-size: 13px;
+}
+.source-link {
+  margin-left: auto;
+  font-size: 12px;
+}
+main {
+  max-width: 1404px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+.intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 34px 0 34px;
+}
+.intro h1 {
+  font-family: "IBM Plex Serif", serif;
+  font-weight: 400;
+  font-size: clamp(30px, 3vw, 45px);
+  line-height: 1.14;
+  letter-spacing: -1.4px;
+  margin: 0 0 12px;
+}
+.intro p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.engine {
+  text-align: right;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--blue);
+  padding-bottom: 4px;
+}
+.engine small {
+  color: var(--muted);
+  font-size: 11px;
+}
+.live-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: #4f816e;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+.modes {
+  display: flex;
+  border-bottom: 1px solid #bacbdc;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.modes button {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 14px;
+  padding: 12px 3px 13px;
+  min-height: 44px;
+  border-bottom: 3px solid transparent;
+}
+.modes button[aria-pressed="true"] {
+  color: var(--ink);
+  border-bottom-color: var(--blue);
+  font-weight: 600;
+}
+.bench {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  border: 1px solid #c4d2df;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--paper);
+}
+.parameters {
+  padding: 23px 24px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--line);
+}
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.panel-heading h2 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+.parameters .panel-heading {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 22px;
+}
+#model-tag {
+  font-size: 11px;
+  color: var(--muted);
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin: 0 0 16px;
+  font-size: 12px;
+}
+.field span {
+  color: #3c536b;
+}
+.field input,
+.field select {
+  border: 1px solid #bccbd8;
+  border-radius: 4px;
+  width: 100%;
+  height: 38px;
+  padding: 7px 10px;
+  background: #fff;
+  color: #17293d;
+  min-width: 0;
+  font-variant-numeric: tabular-nums;
+}
+.field small {
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.field-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.field-note {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 2px 0 22px;
+}
+.run {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border: 0;
+  border-radius: 4px;
+  background: #254d75;
+  color: white;
+  padding: 12px 15px;
+  font-size: 13px;
+  min-height: 44px;
+}
+.run:hover {
+  background: #1a3c5d;
+}
+.run span {
+  font-size: 20px;
+  font-weight: 400;
+}
+.status {
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 15px;
+  color: #426c60;
+  min-height: 32px;
+}
+.status.error {
+  color: #a03d37;
+}
+.scope {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #60758a;
+  margin: 18px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.visual {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.chamber {
+  position: relative;
+  background: #142a41;
+  min-height: 430px;
+  flex: 1;
+  overflow: hidden;
+}
+.chamber canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.scene-heading {
+  position: absolute;
+  z-index: 2;
+  left: 25px;
+  right: 25px;
+  top: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+  color: #d7e8f6;
+  font-size: 12px;
+}
+.scene-heading span:last-child {
+  color: #9cb6cc;
+  font-size: 11px;
+}
+.scene-legend {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  z-index: 2;
+  display: flex;
+  gap: 18px;
+  pointer-events: none;
+  font-size: 10px;
+  color: #b8cbdc;
+}
+.scene-legend span:before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 7px;
+  background: #fff;
+}
+.scene-legend .quark:before {
+  background: #ffad91;
+}
+.scene-legend .gluon:before {
+  background: #ada0f2;
+}
+.scene-legend .lepton:before {
+  background: #72dbed;
+}
+.orbit-hint {
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+  z-index: 2;
+  color: #8faac1;
+  font-size: 10px;
+  pointer-events: none;
+}
+.camera {
+  position: absolute;
+  right: 22px;
+  top: 56px;
+  border: 1px solid #456078;
+  border-radius: 4px;
+  background: #1c354c;
+  color: #afc5d8;
+  font-size: 10px;
+  padding: 7px 10px;
+  min-height: 32px;
+  z-index: 3;
+}
+.timeline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 13px 22px;
+  background: #1b344c;
+  color: #aac2d7;
+  font-size: 11px;
+}
+.timeline button {
+  min-height: 34px;
+  min-width: 56px;
+  border: 1px solid #547189;
+  background: none;
+  border-radius: 4px;
+  color: #deebf5;
+  font-size: 11px;
+}
+.timeline input {
+  min-width: 30px;
+  flex: 1;
+  accent-color: #a3c7e2;
+  height: 26px;
+}
+.timeline label {
+  white-space: nowrap;
+}
+.timeline span {
+  min-width: 30px;
+  font-variant-numeric: tabular-nums;
+}
+.scene-caption {
+  padding: 13px 22px;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--muted);
+  min-height: 55px;
+}
+.analysis {
+  display: grid;
+  grid-template-columns: 400px minmax(0, 1fr);
+  margin-top: 20px;
+  gap: 28px;
+}
+.result-summary,
+.plot-panel {
+  padding: 22px 24px;
+  background: #f7f9fb;
+  border-radius: 6px;
+  min-width: 0;
+}
+.text-button {
+  padding: 6px 0;
+  min-height: 32px;
+  border: 0;
+  background: none;
+  color: #456685;
+  font-size: 11px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.text-button:hover {
+  color: #17293d;
+}
+.numbers p {
+  color: var(--muted);
+  font-size: 12px;
+}
+.numbers dl {
+  margin: 0;
+  font-size: 12px;
+}
+.numbers dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px solid #e0e7ef;
+}
+.numbers dt {
+  color: var(--muted);
+}
+.numbers dd {
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.result-formula {
+  font-family: "IBM Plex Serif", serif;
+  font-size: 21px;
+  line-height: 1.4;
+  margin: 0 0 15px;
+  color: #254d75;
+}
+.plot svg {
+  width: 100%;
+  display: block;
+}
+.plot-note {
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--muted);
+  margin: 8px 0 0;
+  max-width: 90ch;
+}
+.plot-panel .panel-heading {
+  margin-bottom: 5px;
+}
+#event-picker {
+  margin-top: 16px;
+  font-size: 11px;
+}
+#event-picker label {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+}
+#event-picker input {
+  width: 100%;
+  margin: 8px 0 0;
+  accent-color: #456d8e;
+  min-height: 24px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+td,
+th {
+  padding: 10px 12px;
+  border-bottom: 1px solid #d4dee8;
+}
+th {
+  font-weight: 500;
+  color: #4e6780;
+  font-size: 11px;
+}
+td {
+  white-space: nowrap;
+}
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.diagram-panel {
+  margin-top: 28px;
+  padding: 0 0 16px;
+}
+.diagram-panel .panel-heading {
+  margin-bottom: 12px;
+}
+.diagram-panel .panel-heading > span {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: right;
+}
+.diagrams {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  overflow-x: auto;
+}
+.diagrams figure {
+  margin: 0;
+  background: #f7f9fb;
+  border-radius: 6px;
+  padding: 10px 16px 8px;
+  min-width: 0;
+}
+.diagrams figure svg {
+  display: block;
+  width: 100%;
+  max-height: 170px;
+}
+.diagrams figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  color: #5c7085;
+  font-size: 10px;
+}
+.diagrams > table,
+.diagrams > p,
+.diagrams > .more-diagrams {
+  grid-column: 1/-1;
+}
+.physics-notes {
+  font-size: 12px;
+  line-height: 1.7;
+  border-top: 1px solid #c3d2df;
+  margin: 20px 0 25px;
+  padding-top: 17px;
+  color: #526a80;
+}
+.physics-notes summary {
+  cursor: pointer;
+  color: #254d75;
+  min-height: 32px;
+}
+.physics-notes > div {
+  max-width: 95ch;
+  margin-top: 10px;
+}
+.physics-notes p {
+  max-width: 100ch;
+}
+.custom-momenta {
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 6px 0 20px;
+}
+.custom-momenta summary {
+  cursor: pointer;
+  min-height: 30px;
+}
+.custom-momenta textarea {
+  width: 100%;
+  height: 140px;
+  border: 1px solid #a8bfd2;
+  border-radius: 3px;
+  padding: 8px;
+  font-size: 11px;
+  resize: vertical;
+}
+.formula {
+  font-family: "IBM Plex Serif", serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+.webgl-error {
+  position: absolute;
+  z-index: 2;
+  top: 40%;
+  left: 15%;
+  right: 15%;
+  color: #d4e3ef;
+  line-height: 1.6;
+  font-size: 14px;
+}
+footer {
+  max-width: 1404px;
+  padding: 10px 30px 24px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 10px;
+  color: #6f8295;
+}
+@media (min-width: 1550px) {
+  .chamber {
+    min-height: 510px;
+  }
+}
+@media (max-width: 1050px) {
+  .bench {
+    grid-template-columns: 270px minmax(0, 1fr);
+  }
+  .parameters {
+    padding: 20px;
+  }
+  .analysis {
+    grid-template-columns: 330px minmax(0, 1fr);
+    gap: 16px;
+  }
+  .scene-heading {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .orbit-hint {
+    display: none;
+  }
+  .diagrams {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .masthead {
+    padding: 20px 30px;
+  }
+  .intro {
+    margin-top: 25px;
+  }
+  .timeline {
+    gap: 10px;
+  }
+  .timeline label {
+    font-size: 10px;
+  }
+  .scene-legend {
+    gap: 10px;
+  }
+  .scene-legend span {
+    font-size: 9px;
+  }
+}
+@media (max-width: 760px) {
+  .masthead {
+    padding: 18px 20px;
+    gap: 15px;
+  }
+  .descriptor {
+    display: none;
+  }
+  .source-link {
+    font-size: 10px;
+  }
+  .wordmark {
+    font-size: 24px;
+  }
+  .symbol {
+    height: 30px;
+    width: 30px;
+    font-size: 24px;
+  }
+  main {
+    padding: 0 16px;
+  }
+  .intro {
+    margin: 24px 0;
+  }
+  .intro h1 {
+    font-size: 32px;
+    line-height: 1.15;
+  }
+  .intro p {
+    font-size: 12px;
+    max-width: 30ch;
+  }
+  .engine {
+    display: none;
+  }
+  .modes {
+    gap: 0;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .modes button {
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .bench {
+    display: flex;
+    flex-direction: column;
+  }
+  .parameters {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 18px;
+  }
+  .parameters .panel-heading {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .parameters #fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 14px;
+  }
+  .parameters #fields > .field-pair,
+  .parameters #fields > .field-note,
+  .parameters #fields > .custom-momenta,
+  .parameters #fields > .formula {
+    grid-column: 1/-1;
+  }
+  .field {
+    margin-bottom: 12px;
+  }
+  .field input,
+  .field select {
+    height: 42px;
+    font-size: 14px;
+  }
+  .field small {
+    font-size: 10px;
+  }
+  .field-note {
+    margin: 1px 0 12px;
+    font-size: 10px;
+  }
+  .scope {
+    font-size: 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+  }
+  .status {
+    min-height: 0;
+    margin-top: 10px;
+  }
+  .run {
+    min-height: 44px;
+  }
+  .chamber {
+    height: 350px;
+    min-height: 350px;
+    flex: auto;
+  }
+  .scene-heading {
+    left: 18px;
+    top: 16px;
+  }
+  .scene-legend {
+    left: 18px;
+    bottom: 19px;
+    gap: 12px;
+  }
+  .scene-caption {
+    padding: 11px 16px;
+  }
+  .timeline {
+    padding: 10px 14px;
+  }
+  .timeline button {
+    min-height: 40px;
+  }
+  .timeline label {
+    max-width: 78px;
+    white-space: normal;
+  }
+  .camera {
+    top: 55px;
+    right: 16px;
+    min-height: 40px;
+  }
+  .analysis {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .result-summary,
+  .plot-panel {
+    padding: 18px;
+  }
+  .numbers dl {
+    font-size: 12px;
+  }
+  .diagrams {
+    gap: 10px;
+  }
+  .diagrams figure {
+    padding: 8px;
+  }
+  .diagrams figcaption {
+    font-size: 9px;
+  }
+  .diagram-panel .panel-heading {
+    align-items: flex-start;
+  }
+  .diagram-panel .panel-heading > span {
+    max-width: 48%;
+    font-size: 10px;
+  }
+  .diagram-panel {
+    margin-top: 22px;
+  }
+  .plot-note {
+    font-size: 10px;
+  }
+  .physics-notes {
+    font-size: 11px;
+  }
+  footer {
+    padding: 0 18px 20px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .text-button {
+    min-height: 40px;
+  }
+  .diagrams table {
+    font-size: 10px;
+  }
+  td,
+  th {
+    padding: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,16 @@
+[package]
+name = "unnamed-python"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+name = "unnamed_physics"
+crate-type = ["cdylib"]
+
+[dependencies]
+physics_core = { package = "unnamed-physics", path = "../physics" }
+pyo3 = { version = "0.30", features = ["extension-module"] }
+serde.workspace = true
+serde_json.workspace = true
+

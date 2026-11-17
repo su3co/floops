@@ -1,0 +1,12 @@
+/target/
+/web/node_modules/
+/web/dist/
+/output/
+/.venv/
+__pycache__/
+*.so
+*.dylib
+*.whl
+.DS_Store
+/.playwright-cli/
+
