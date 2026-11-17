@@ -2,9 +2,9 @@
 
 Scattering amplitudes, particle decays and Feynman diagrams, computed in Rust. Thin Python bindings provide access to the same engine; a Three.js viewer animates its results.
 
-![Recorded GPU gluon-scattering campaign: sampled momenta, event count and angular cross section](docs/images/gpu-scattering.gif)
+![Smooth animation of recorded gluon-scattering momenta](docs/images/gpu-scattering.gif)
 
-2.784 trillion weighted events, 20 minutes of GPU time, 91.9 GiB of resident event data. The animation shows sampled momenta and statistics from the complete run. [Measurements and reproduction](benchmarks/GPU.md) · [Rust CUDA Oxide backend](docs/GPU.md).
+Sampled momenta from a 2.784-trillion-event GPU run. [Measurements](benchmarks/GPU.md) · [CUDA Oxide backend](docs/GPU.md).
 
 | Experiment | Implemented physics |
 | --- | --- |

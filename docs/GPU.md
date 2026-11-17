@@ -28,10 +28,10 @@ See the [20-minute campaign](../benchmarks/GPU.md) for measurements and backend 
 
 ```sh
 npm ci --prefix tools
-node tools/render-campaign.mjs benchmarks/gpu-20min/result.json.gz output/frames 180
-ffmpeg -framerate 15 -i output/frames/frame-%04d.png \
-  -filter_complex "[0:v]split[a][b];[a]palettegen=stats_mode=diff[p];[b][p]paletteuse=dither=bayer:bayer_scale=3" \
-  -loop 0 output/gpu-scattering.gif
+node tools/render-campaign.mjs benchmarks/gpu-20min/result.json.gz output/frames
+bash tools/encode-campaign.sh output/frames output/gpu-scattering.gif
 ```
+
+The default is a 5-second seamless loop: 250 frames at 50 fps, rendered at 2560 × 1280 and downsampled to 1280 × 640. A flat background and a shared, undithered palette avoid grain and palette flicker. If installed, Gifsicle losslessly optimizes the encoded GIF. The only label is typeset in LaTeX Computer Modern and embedded as vector outlines, so no font installation is required to render frames. To rebuild that label, run `pdflatex -output-directory=output tools/scattering-label.tex`, then `pdftocairo -svg output/scattering-label.pdf tools/scattering-label.svg`.
 
 To check and archive a new run, use `node tools/summarize-campaign.mjs output/cuda-run/result.json output/cuda-archive`.

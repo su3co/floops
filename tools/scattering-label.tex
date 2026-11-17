@@ -1,0 +1,13 @@
+% The animation's only label, typeset with LaTeX's Computer Modern math fonts.
+% Rebuild: pdflatex -output-directory=output tools/scattering-label.tex
+%          pdftocairo -svg output/scattering-label.pdf tools/scattering-label.svg
+\documentclass{article}
+\pagestyle{empty}
+\begin{document}
+\setbox0=\hbox{\fontsize{22}{26}\selectfont $g\,g \;\longrightarrow\; g\,g$}
+\pdfpagewidth=\dimexpr\wd0+4pt\relax
+\pdfpageheight=\dimexpr\ht0+\dp0+4pt\relax
+\pdfhorigin=2pt
+\pdfvorigin=2pt
+\shipout\box0
+\end{document}
