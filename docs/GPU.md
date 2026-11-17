@@ -1,8 +1,10 @@
 # CUDA scattering
 
-The optional `cuda` feature computes the same nine massless tree-level QED/QCD channels as the Rust CPU backend. It uses Rust with cudarc and a small CUDA kernel, with FP64 arithmetic and fast-math disabled. The default Python wheel and default Rust build do not require CUDA.
+The optional `cuda` feature computes the same nine massless tree-level QED/QCD channels as the Rust CPU backend. GPU kernels are written in Rust and compiled with NVIDIA CUDA Oxide; cudarc handles the host-side CUDA driver calls. The CPU and GPU share the matrix-element formulas and SplitMix64 implementation. Arithmetic is FP64 with FMA contraction disabled. The default Python wheel and default Rust build do not require CUDA.
 
-Requires an NVIDIA GPU, an NVIDIA driver, Rust and CUDA NVRTC 12.8 or newer. Add the installed CUDA `lib64` directory to `LD_LIBRARY_PATH` where necessary.
+Running the bundled kernels requires an NVIDIA Ampere-or-newer GPU, a CUDA 12.8+ compatible driver and Rust. No CUDA C++ compiler or NVRTC compilation is used at runtime.
+
+To rebuild the kernels, install CUDA Oxide `cuda-oxide/v0.4.0` (commit `9d0c9bfbc954a9a29565ab81b78da70f054d8e04`) and its pinned Rust 1.99.1 toolchain following [NVIDIA's instructions](https://github.com/NVIDIA/cuda-rust/tree/cuda-oxide/v0.4.0/cuda-oxide). Run `bash tools/build-oxide.sh`, then run the GPU validation below. `gpu/oxide` has its own lockfile and toolchain; the normal workspace remains on stable Rust. The bundled PTX targets `sm_80` and is JIT-compiled by the NVIDIA driver for the installed GPU.
 
 ```sh
 cargo run --release -p floops --features cuda --example cuda_scatter -- --validate-only

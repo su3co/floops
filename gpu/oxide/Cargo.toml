@@ -1,0 +1,15 @@
+[package]
+name = "floops-oxide-kernels"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[dependencies]
+cuda-device = { git = "https://github.com/NVIDIA/cuda-rust.git", rev = "9d0c9bfbc954a9a29565ab81b78da70f054d8e04" }
+
+[profile.release]
+opt-level = 3
+panic = "abort"

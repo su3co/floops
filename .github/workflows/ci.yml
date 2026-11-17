@@ -17,6 +17,7 @@ jobs:
       - run: cargo clippy --workspace --exclude floops-python --all-targets -- -D warnings
       - run: cargo test --release -p floops
       - run: cargo build --release -p floops-cli
+      - run: cargo check -p floops --features cuda --all-targets
   web:
     runs-on: ubuntu-latest
     defaults:

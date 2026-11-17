@@ -1,6 +1,7 @@
 //! Optional CUDA implementation of the nine massless tree-level scattering channels.
-//! Requires an NVIDIA driver and CUDA NVRTC 12.8 or newer. No CUDA library is loaded
-//! by the default CPU build. FP64 is used for event generation and reductions.
+//! Kernels are written in Rust and compiled by CUDA Oxide to bundled sm_80 PTX.
+//! Requires an NVIDIA Ampere-or-newer GPU and a CUDA 12.8+ compatible driver.
+//! No CUDA library is loaded by the default CPU build. FP64 is used throughout.
 use crate::{
     math::FourVector,
     rng::Rng,
@@ -11,10 +12,10 @@ use cudarc::{
         sys::CUevent_flags, CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig,
         PushKernelArg,
     },
-    nvrtc::{compile_ptx_with_opts, CompileOptions},
+    nvrtc::Ptx,
 };
 use serde::{Deserialize, Serialize};
-use std::{error::Error, sync::Arc};
+use std::{error::Error, path::Path, sync::Arc};
 
 pub type CudaResult<T> = std::result::Result<T, Box<dyn Error>>;
 const FIELDS: usize = 8;
@@ -32,7 +33,13 @@ pub struct GpuScattering {
 pub struct ResidentEvents {
     data: CudaSlice<f64>,
     partials: CudaSlice<f64>,
-    pub count: usize,
+    owner: Arc<CudaStream>,
+    count: usize,
+}
+impl ResidentEvents {
+    pub fn count(&self) -> usize {
+        self.count
+    }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct BatchStats {
@@ -44,19 +51,28 @@ pub struct BatchStats {
 }
 
 impl GpuScattering {
+    /// Load a CUDA Oxide PTX module built from gpu/oxide.
+    ///
+    /// # Safety
+    /// The PTX must implement the exact generate/reduce/gather ABI and bounded
+    /// accesses documented in gpu/oxide/src/lib.rs. Arbitrary PTX can violate
+    /// host allocation guarantees. Prefer the bundled, validated constructor.
+    pub unsafe fn from_ptx(ordinal: usize, path: &Path) -> CudaResult<Self> {
+        let context = CudaContext::new(ordinal)?;
+        let stream = context.default_stream();
+        let module = context.load_module(cudarc::nvrtc::Ptx::from_file(path))?;
+        Ok(Self {
+            context,
+            stream,
+            generate: module.load_function("generate")?,
+            reduce: module.load_function("reduce")?,
+            gather: module.load_function("gather")?,
+        })
+    }
     pub fn new(ordinal: usize) -> CudaResult<Self> {
         let context = CudaContext::new(ordinal)?;
         let stream = context.default_stream();
-        let (major, minor) = context.compute_capability()?;
-        let ptx = compile_ptx_with_opts(
-            include_str!("scattering.cu"),
-            CompileOptions {
-                fmad: Some(false),
-                use_fast_math: Some(false),
-                options: vec![format!("--gpu-architecture=compute_{major}{minor}")],
-                ..Default::default()
-            },
-        )?;
+        let ptx = Ptx::from_src(include_str!("scattering.ptx"));
         let module = context.load_module(ptx)?;
         Ok(Self {
             context,
@@ -78,6 +94,7 @@ impl GpuScattering {
             partials: self
                 .stream
                 .alloc_zeros::<f64>(REDUCE_BLOCKS as usize * PARTIAL_FIELDS)?,
+            owner: Arc::clone(&self.stream),
             count,
         })
     }
@@ -87,6 +104,9 @@ impl GpuScattering {
         request: &ScatterRequest,
         offset: u64,
     ) -> CudaResult<BatchStats> {
+        if !Arc::ptr_eq(&self.stream, &buffer.owner) {
+            return Err("Event buffer belongs to another CUDA backend".into());
+        }
         let mut validation = request.clone();
         validation.events = 2;
         validation.display = 0;
@@ -161,11 +181,15 @@ impl GpuScattering {
         offset: u64,
         count: usize,
     ) -> CudaResult<Vec<Event>> {
+        if !Arc::ptr_eq(&self.stream, &buffer.owner) {
+            return Err("Event buffer belongs to another CUDA backend".into());
+        }
         if count == 0 || count > buffer.count || count > 65536 {
             return Err("Sample size must be 1..=min(batch,65536)".into());
         }
         let mut sample = self.stream.alloc_zeros::<f64>(count * FIELDS)?;
         let n = buffer.count as u64;
+        offset.checked_add(n).ok_or("event index overflow")?;
         let k = count as u64;
         // SAFETY: gather writes exactly 8*count values with bounded input indices.
         unsafe {

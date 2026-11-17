@@ -70,24 +70,9 @@ impl Process {
 }
 /// PDG massless leading-order matrix elements, averaged over initial spins/colors.
 pub fn matrix_element_squared(p: Process, s: f64, t: f64, u: f64, alpha: f64) -> f64 {
-    let s2 = s * s;
-    let t2 = t * t;
-    let u2 = u * u;
-    let g4 = (4. * PI * alpha).powi(2);
-    g4 * match p {
-        Process::ElectronMuon => 2. * (t2 + u2) / s2,
-        Process::QuarkDifferent => 4. / 9. * (s2 + u2) / t2,
-        Process::QuarkSame => 4. / 9. * ((s2 + u2) / t2 + (s2 + t2) / u2) - 8. / 27. * s2 / (u * t),
-        Process::Annihilation => 4. / 9. * (t2 + u2) / s2,
-        Process::QuarkAntiquark => {
-            4. / 9. * ((s2 + u2) / t2 + (t2 + u2) / s2) - 8. / 27. * u2 / (s * t)
-        }
-        Process::QuarkGluon => (s2 + u2) / t2 - 4. / 9. * (s2 + u2) / (s * u),
-        Process::QuarkToGluon => 32. / 27. * (u2 + t2) / (u * t) - 8. / 3. * (u2 + t2) / s2,
-        Process::GluonToQuark => 1. / 6. * (u2 + t2) / (u * t) - 3. / 8. * (u2 + t2) / s2,
-        Process::GluonGluon => 4.5 * (3. - u * t / s2 - u * s / t2 - s * t / u2),
-    }
+    crate::tree_level::matrix_element_squared(p as u32, s, t, u, alpha)
 }
+
 pub fn differential_pb(p: Process, energy: f64, cos: f64, alpha: f64) -> f64 {
     let s = energy * energy;
     let t = -s * (1. - cos) / 2.;

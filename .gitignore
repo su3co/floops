@@ -10,4 +10,7 @@ __pycache__/
 .DS_Store
 /.playwright-cli/
 /dist/
+/tools/node_modules/
+/gpu/oxide/target/
+/gpu/oxide/*.ptx
 

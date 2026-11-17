@@ -15,6 +15,9 @@ use std::{
 
 #[derive(Parser)]
 struct Args {
+    /// Trusted CUDA Oxide PTX built from gpu/oxide with this repository's ABI.
+    #[arg(long)]
+    ptx: Option<PathBuf>,
     #[arg(long, default_value_t = 0)]
     gpu: usize,
     /// Accumulated CUDA-event time, excluding compilation, host copies and cooling.
@@ -170,7 +173,11 @@ fn main() -> CudaResult<()> {
         ..Default::default()
     };
     request.validate()?;
-    let gpu = GpuScattering::new(args.gpu)?;
+    let gpu = match &args.ptx {
+        // SAFETY: --ptx explicitly opts into a trusted kernel built from gpu/oxide.
+        Some(path) => unsafe { GpuScattering::from_ptx(args.gpu, path)? },
+        None => GpuScattering::new(args.gpu)?,
+    };
     let error = gpu.validate()?;
     println!("CUDA validation passed: all 9 channels, max relative difference {error:.3e}");
     if args.validate_only {
@@ -196,7 +203,7 @@ fn main() -> CudaResult<()> {
     gpu.context.synchronize()?;
     let theory = reference(&request);
     let mut receipt=Receipt {
-        schema_version:1,state:"running".into(),backend:"Rust + CUDA FP64".into(),device:gpu.context.name()?,
+        schema_version:1,state:"running".into(),backend:"Rust + CUDA Oxide FP64".into(),device:gpu.context.name()?,
         revision:std::env::var("FLOOPS_REVISION").unwrap_or_else(|_|"working-tree".into()),
         started_unix_s:SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs(),requested_gpu_seconds:args.seconds,
         gpu_seconds:0.,wall_seconds:0.,events:0,batches:0,resident_events:count,event_bytes:BYTES_PER_EVENT,
