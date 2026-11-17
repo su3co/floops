@@ -253,7 +253,9 @@ function setMode(m: Mode) {
     chamber.playing = false;
     chamber.clear();
     $("#play").textContent = "Play";
+    $("#play").setAttribute("aria-label", "Play animation");
   }
+  $("#status").classList.remove("error");
 }
 function read(id: string) {
   return Number(($(`#${id}`) as HTMLInputElement).value);
@@ -369,6 +371,10 @@ function setPicker(
     const i = read("event-index");
     $("#event-number").textContent = `${i + 1} / ${count}`;
     action(i);
+    if (chamber) {
+      ($("#timeline") as HTMLInputElement).value = String(chamber.time);
+      $("#time-value").textContent = Math.round(chamber.time * 100) + "%";
+    }
   };
 }
 function drawDecay(data: any, i: number) {
@@ -641,6 +647,8 @@ async function run() {
     }
   } catch (e) {
     if (id === requestId) {
+      $("#numbers").innerHTML =
+        "<p>No result. Adjust the parameters and run again.</p>";
       $("#status").textContent = e instanceof Error ? e.message : String(e);
       $("#status").classList.add("error");
     }
